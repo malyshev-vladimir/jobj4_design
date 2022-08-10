@@ -68,15 +68,15 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
             }
 
             public E next() {
-                if (expectedModCount != modCount) {
-                    throw new ConcurrentModificationException();
+                if (hasNext()) {
+                    if (currentObject == null) {
+                        throw new NoSuchElementException();
+                    }
+                    E result = currentObject.item;
+                    currentObject = currentObject.next;
+                    return result;
                 }
-                if (currentObject == null) {
-                    throw new NoSuchElementException();
-                }
-                E result = currentObject.item;
-                currentObject = currentObject.next;
-                return result;
+                return null;
             }
         };
     }
