@@ -68,7 +68,9 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
             }
 
             public E next() {
-                if (hasNext()) {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                } else {
                     if (currentObject == null) {
                         throw new NoSuchElementException();
                     }
@@ -76,7 +78,6 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
                     currentObject = currentObject.next;
                     return result;
                 }
-                return null;
             }
         };
     }
