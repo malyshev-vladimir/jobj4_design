@@ -70,14 +70,10 @@ public class SimpleLinkedList<E> implements LinkedList<E> {
             public E next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
-                } else {
-                    if (currentObject == null) {
-                        throw new NoSuchElementException();
-                    }
-                    E result = currentObject.item;
-                    currentObject = currentObject.next;
-                    return result;
                 }
+                E result = currentObject.item;
+                currentObject = currentObject.next;
+                return result;
             }
         };
     }
