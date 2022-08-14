@@ -1,5 +1,7 @@
 package collection;
 
+import java.util.NoSuchElementException;
+
 public class SimpleQueue<T> {
     private final SimpleStack<T> in = new SimpleStack<>();
     private final SimpleStack<T> out = new SimpleStack<>();
@@ -8,12 +10,15 @@ public class SimpleQueue<T> {
     private int sizeOut;
 
     public T poll() {
-        if (sizeOut <= 0) {
+        if (sizeOut == 0) {
             while (sizeIn > 0) {
                 out.push(in.pop());
                 sizeIn--;
                 sizeOut++;
             }
+        }
+        if (sizeOut == 0) {
+            throw new NoSuchElementException();
         }
         sizeOut--;
         return out.pop();
