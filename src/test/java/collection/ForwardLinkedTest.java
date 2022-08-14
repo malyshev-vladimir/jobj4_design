@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 
 class ForwardLinkedTest {
     private ForwardLinked<Integer> linked;
+    private ForwardLinked<Integer> AnotherLinked;
 
     @BeforeEach
     public void init() {
@@ -17,6 +18,7 @@ class ForwardLinkedTest {
         linked.add(2);
         linked.add(3);
         linked.add(4);
+        AnotherLinked = new ForwardLinked<>();
     }
 
     @Test
@@ -41,5 +43,27 @@ class ForwardLinkedTest {
         linked.deleteFirst();
         Iterator<Integer> it = linked.iterator();
         assertThat(it.next()).isEqualTo(2);
+    }
+
+    @Test
+    void whenSize0ThenReturnFalse() {
+        assertThat(AnotherLinked.revert()).isFalse();
+    }
+
+    @Test
+    void whenSize1ThenReturnFalse() {
+        AnotherLinked.add(1);
+        assertThat(AnotherLinked.revert()).isFalse();
+    }
+
+    @Test
+    void whenAddAndRevertTrue() {
+        AnotherLinked.add(1);
+        AnotherLinked.add(2);
+        AnotherLinked.add(3);
+        AnotherLinked.add(4);
+        assertThat(AnotherLinked).containsSequence(1, 2, 3, 4);
+        assertThat(AnotherLinked.revert()).isTrue();
+        assertThat(AnotherLinked).containsSequence(4, 3, 2, 1);
     }
 }
