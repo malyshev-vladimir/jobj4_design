@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 
 class ForwardLinkedTest {
     private ForwardLinked<Integer> linked;
-    private ForwardLinked<Integer> AnotherLinked;
+    private ForwardLinked<Integer> anotherLinked;
 
     @BeforeEach
     public void init() {
@@ -18,7 +18,7 @@ class ForwardLinkedTest {
         linked.add(2);
         linked.add(3);
         linked.add(4);
-        AnotherLinked = new ForwardLinked<>();
+        anotherLinked = new ForwardLinked<>();
     }
 
     @Test
@@ -47,23 +47,23 @@ class ForwardLinkedTest {
 
     @Test
     void whenSize0ThenReturnFalse() {
-        assertThat(AnotherLinked.revert()).isFalse();
+        assertThat(anotherLinked.revert()).isFalse();
     }
 
     @Test
     void whenSize1ThenReturnFalse() {
-        AnotherLinked.add(1);
-        assertThat(AnotherLinked.revert()).isFalse();
+        anotherLinked.add(1);
+        assertThat(anotherLinked.revert()).isFalse();
     }
 
     @Test
     void whenAddAndRevertTrue() {
-        AnotherLinked.add(1);
-        AnotherLinked.add(2);
-        AnotherLinked.add(3);
-        AnotherLinked.add(4);
-        assertThat(AnotherLinked).containsSequence(1, 2, 3, 4);
-        assertThat(AnotherLinked.revert()).isTrue();
-        assertThat(AnotherLinked).containsSequence(4, 3, 2, 1);
+        anotherLinked.add(1);
+        anotherLinked.add(2);
+        anotherLinked.add(3);
+        anotherLinked.add(4);
+        assertThat(anotherLinked).containsSequence(1, 2, 3, 4);
+        assertThat(anotherLinked.revert()).isTrue();
+        assertThat(anotherLinked).containsSequence(4, 3, 2, 1);
     }
 }
