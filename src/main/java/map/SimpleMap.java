@@ -63,7 +63,7 @@ public class SimpleMap<K, V> implements Map<K, V> {
         int hash = hash(key);
         int index = indexFor(hash);
         if (table[index] != null) {
-            if (hash(table[index].key) == hash && table[index].key == key) {
+            if (hash(table[index].key) == hash && key.equals(table[index].key)) {
                 result = table[index].value;
             }
         }
@@ -73,10 +73,18 @@ public class SimpleMap<K, V> implements Map<K, V> {
     @Override
     public boolean remove(K key) {
         boolean result = false;
+        if (key == null) {
+            if (table[0] != null && table[0].key == null) {
+                table[0] = null;
+                count--;
+                modCount++;
+                return true;
+            }
+        }
         int hash = hash(key);
         int index = indexFor(hash);
         if (table[index] != null) {
-            if (hash(table[index].key) == hash && table[index].key == key) {
+            if (hash(table[index].key) == hash && key.equals(table[index].key)) {
                 table[index] = null;
                 count--;
                 modCount++;
