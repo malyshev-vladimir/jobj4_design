@@ -58,13 +58,14 @@ public class SimpleMap<K, V> implements Map<K, V> {
     public V get(K key) {
         V result = null;
         if (key == null) {
-            return (table[0] != null && table[0].key == null) ? table[0].value : null;
-        }
-        int hash = hash(key);
-        int index = indexFor(hash);
-        if (table[index] != null) {
-            if (hash(table[index].key) == hash && key.equals(table[index].key)) {
-                result = table[index].value;
+            result = (table[0] != null && table[0].key == null) ? table[0].value : null;
+        } else {
+            int hash = hash(key);
+            int index = indexFor(hash);
+            if (table[index] != null) {
+                if (hash(table[index].key) == hash && key.equals(table[index].key)) {
+                    result = table[index].value;
+                }
             }
         }
         return result;
@@ -78,17 +79,18 @@ public class SimpleMap<K, V> implements Map<K, V> {
                 table[0] = null;
                 count--;
                 modCount++;
-                return true;
-            }
-        }
-        int hash = hash(key);
-        int index = indexFor(hash);
-        if (table[index] != null) {
-            if (hash(table[index].key) == hash && key.equals(table[index].key)) {
-                table[index] = null;
-                count--;
-                modCount++;
                 result = true;
+            }
+        } else {
+            int hash = hash(key);
+            int index = indexFor(hash);
+            if (table[index] != null) {
+                if (hash(table[index].key) == hash && key.equals(table[index].key)) {
+                    table[index] = null;
+                    count--;
+                    modCount++;
+                    result = true;
+                }
             }
         }
         return result;
