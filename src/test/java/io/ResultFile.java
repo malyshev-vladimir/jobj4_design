@@ -1,13 +1,14 @@
 package io;
 
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 
 public class ResultFile {
     public static void main(String[] args) {
         try (FileOutputStream out = new FileOutputStream("result.txt")) {
             out.write(multiple(5).getBytes());
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
