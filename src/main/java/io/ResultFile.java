@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public class ResultFile {
     public static void main(String[] args) {
-        try (FileOutputStream out = new FileOutputStream("result.txt")) {
+        try (FileOutputStream out = new FileOutputStream("src/main/java/io/resultOfResultFile.txt")) {
             out.write(multiple(5).getBytes());
         } catch (IOException e) {
             e.printStackTrace();
