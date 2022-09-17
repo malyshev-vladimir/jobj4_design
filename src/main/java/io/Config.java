@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class Config {
 
     private final String path;
-    private final Map<String, String> values = new HashMap<String, String>();
+    private final Map<String, String> values = new HashMap<>();
 
     public Config(final String path) {
         this.path = path;
@@ -21,8 +21,20 @@ public class Config {
     public void load() {
         try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
             read.lines()
+                    .filter(s -> s.length() != 0 && !s.startsWith("#"))
                     .map(s -> s.split("=", 2))
-                    .forEach(l -> values.put(l[0], l[1]));
+                    .map(line -> {
+                        if (line.length != 2) {
+                            throw new IllegalArgumentException();
+                        } else if (line[0].trim().length() == 0) {
+                            throw new IllegalArgumentException();
+                        }  else if (line[1].trim().length() == 0) {
+                            throw new IllegalArgumentException();
+                        } else {
+                            return line;
+                        }
+                    })
+                    .forEach(l -> values.put(l[0].trim(), l[1].trim()));
         } catch (IOException e) {
             e.printStackTrace();
         }
