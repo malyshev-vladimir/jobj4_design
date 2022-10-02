@@ -15,7 +15,6 @@ public class Search {
     }
 
     public static void main(String[] args) throws IOException {
-        Path start = Paths.get(".");
-        search(start, p -> p.toFile().getName().endsWith(".java")).forEach(System.out::println);
+        search(Paths.get(args[0]), p -> p.toFile().getName().endsWith(args[1])).forEach(System.out::println);
     }
 }
