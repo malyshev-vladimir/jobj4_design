@@ -13,8 +13,14 @@ public class Search {
         Files.walkFileTree(root, searcher);
         return searcher.getPaths();
     }
+    public static void validate(String[] args) {
+        if (args.length < 2 || args[0].isBlank() || args[1].isBlank() || !args[1].startsWith(".")) {
+            throw new IllegalArgumentException("Invalid arguments");
+        }
+    }
 
     public static void main(String[] args) throws IOException {
+        validate(args);
         search(Paths.get(args[0]), p -> p.toFile().getName().endsWith(args[1])).forEach(System.out::println);
     }
 }
