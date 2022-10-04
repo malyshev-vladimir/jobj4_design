@@ -14,8 +14,14 @@ public class Search {
         return searcher.getPaths();
     }
     public static void validate(String[] args) {
-        if (args.length < 2 || args[0].isBlank() || args[1].isBlank() || !args[1].startsWith(".")) {
-            throw new IllegalArgumentException("Invalid arguments");
+        if (args.length != 2) {
+            throw new IllegalArgumentException("Wrong number of arguments");
+        }
+        if (!args[0].equals(".")) {
+            throw new IllegalArgumentException("The first argument is not a start-folder.");
+        }
+        if (!args[1].startsWith(".") || args[1].substring(1).isBlank()) {
+            throw new IllegalArgumentException("The second argument is not in the correct format");
         }
     }
 
