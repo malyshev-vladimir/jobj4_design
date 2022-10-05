@@ -1,5 +1,6 @@
 package io;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,11 +15,12 @@ public class Search {
         return searcher.getPaths();
     }
     public static void validate(String[] args) {
+        File file = new File(args[0]);
         if (args.length != 2) {
             throw new IllegalArgumentException("Wrong number of arguments");
         }
-        if (!args[0].equals(".")) {
-            throw new IllegalArgumentException("The first argument is not a start-folder.");
+        if (!file.isDirectory()) {
+            throw new IllegalArgumentException(String.format("Wrong directory %s", file.getAbsoluteFile()));
         }
         if (!args[1].startsWith(".") || args[1].substring(1).isBlank()) {
             throw new IllegalArgumentException("The second argument is not in the correct format");
