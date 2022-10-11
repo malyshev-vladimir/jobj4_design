@@ -11,8 +11,15 @@ public class Zip {
     static ArgsName checkedArgs;
 
     public void packFiles(List<File> sources, File target) {
-        for (File source : sources) {
-            packSingleFile(source, target);
+        try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
+            for (File source : sources) {
+                zip.putNextEntry(new ZipEntry(source.getPath()));
+                try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(source))) {
+                    zip.write(out.readAllBytes());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -29,6 +36,15 @@ public class Zip {
 
     public static void checkArgs(String[] args) {
         checkedArgs = ArgsName.of(args);
+        if (!checkedArgs.getValues().containsKey("d")) {
+            throw new IllegalArgumentException("The directory, which we want to archive, was not found.");
+        }
+        if (!checkedArgs.getValues().containsKey("e")) {
+            throw new IllegalArgumentException("The exclusion extension was not found.");
+        }
+        if (!checkedArgs.getValues().containsKey("o")) {
+            throw new IllegalArgumentException("The archive file is not named.");
+        }
     }
 
     public static List<File> searchFiles(String[] args) throws IOException {

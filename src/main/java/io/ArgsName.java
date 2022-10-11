@@ -10,9 +10,13 @@ public class ArgsName {
 
     public String get(String key) {
         if (!values.containsKey(key)) {
-            throw new IllegalArgumentException("The key was not found in the database.");
+            throw new IllegalArgumentException("The key \"" + key + "\" was not found in the database.");
         }
         return values.get(key);
+    }
+
+    public Map<String, String> getValues() {
+        return values;
     }
 
     private void parse(String[] args) {
