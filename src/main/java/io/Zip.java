@@ -1,6 +1,7 @@
 package io;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -8,7 +9,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class Zip {
-    static ArgsName checkedArgs;
+    private static String directory;
+    private static String exclude;
+    private static String output;
 
     public void packFiles(List<File> sources, File target) {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
@@ -35,14 +38,17 @@ public class Zip {
     }
 
     public static void checkArgs(String[] args) {
-        checkedArgs = ArgsName.of(args);
-        if (!checkedArgs.getValues().containsKey("d")) {
-            throw new IllegalArgumentException("The directory, which we want to archive, was not found.");
+        ArgsName argsName = ArgsName.of(args);
+        directory = argsName.get("d");
+        exclude = argsName.get("e");
+        output = argsName.get("o");
+        if (!Files.exists(Paths.get(directory))) {
+            throw new IllegalArgumentException("The directory to archive was not found.");
         }
-        if (!checkedArgs.getValues().containsKey("e")) {
+        if (!exclude.startsWith(".") || exclude.chars().filter(Character::isLetter).count() != exclude.length() - 1) {
             throw new IllegalArgumentException("The exclusion extension was not found.");
         }
-        if (!checkedArgs.getValues().containsKey("o")) {
+        if (output.length() <= 5 || !output.endsWith(".zip")) {
             throw new IllegalArgumentException("The archive file is not named.");
         }
     }
@@ -50,7 +56,7 @@ public class Zip {
     public static List<File> searchFiles(String[] args) throws IOException {
         checkArgs(args);
         return Search
-                .search(Paths.get(checkedArgs.get("d")), p -> !p.toFile().getName().endsWith(checkedArgs.get("e")))
+                .search(Paths.get(directory), p -> !p.toFile().getName().endsWith(exclude))
                 .stream()
                 .map(Path::toFile)
                 .toList();
@@ -64,6 +70,6 @@ public class Zip {
         );
 
         Zip zipAll = new Zip();
-        zipAll.packFiles(searchFiles(args), new File("./zipAll.zip"));
+        zipAll.packFiles(searchFiles(args), new File(output));
     }
 }
